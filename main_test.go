@@ -4,6 +4,7 @@ import "testing"
 
 func TestCache(t *testing.T) {
 	m := New()
+	name := "john"
 
 	schema := Schema{
 		Columns: []string{"name", "age"},
@@ -12,20 +13,22 @@ func TestCache(t *testing.T) {
 
 	data := Data{
 		Schema: schema,
-		Values: []string{"john", "25"},
+		Values: []string{name, "25"},
 	}
 
-	m.Set("john", data)
+	m.Set(name, data)
 
-	result, err := m.Get("john")
+	result, err := m.Get(name)
 	if err != nil {
 		t.Fatalf("getting cache memory: %v", err)
-	} else if result.Values[1] != "25" {
+	}
+	if result.Values[1] != "25" {
 		t.Fatalf("expected '25', got: %v", result.Values[1])
 	}
-	if err := m.Delete("john"); err != nil {
+	if err := m.Delete(name); err != nil {
 		t.Fatalf("deleting cache memory: %v", err)
-	} else if v, err := m.Get("john"); err == nil {
-		t.Fatalf("expected nothing, got: %v", v)
+	}
+	if v, err := m.Get(name); err == nil {
+		t.Fatalf("expected nothing, got: %v %v", v, m.storage[name])
 	}
 }
