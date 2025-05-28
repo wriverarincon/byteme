@@ -40,8 +40,11 @@ func (m *Memory) Set(key string, data Data) error {
 
 // Get fetches data from memory.
 func (m *Memory) Get(key string) (Data, error) {
-	
-	return Data{}, ErrKeyNotFound
+if m.HasData(key) {
+		v := m.storage[key]	
+	return &v, nil
+	}
+	return nil, &ErrKeyNotFound{key, "key not found"}
 }
 
 // HasData returns whether the key contains valid data.
