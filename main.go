@@ -1,5 +1,7 @@
 package byteme
 
+import "fmt"
+
 type Cache interface {
 	Set(key string, data Data) error
 	Get(key string) (Data, error)
@@ -10,10 +12,12 @@ type Data struct {
 	Schema Schema
 	Values []string
 }
+
 type Schema struct {
 	Columns []string
 	Types   []string
 }
+
 type Memory struct {
 	storage map[string]Data
 }
@@ -40,9 +44,9 @@ func (m *Memory) Set(key string, data Data) error {
 
 // Get fetches data from memory.
 func (m *Memory) Get(key string) (*Data, error) {
-if m.HasData(key) {
-		v := m.storage[key]	
-	return &v, nil
+	if m.HasData(key) {
+		v := m.storage[key]
+		return &v, nil
 	}
 	return nil, &ErrKeyNotFound{key, "key not found"}
 }
@@ -61,7 +65,7 @@ func (m *Memory) HasData(key string) bool {
 
 // Delete removes the specified key from memory.
 func (m *Memory) Delete(key string) error {
-if !m.HasData(key) {
+	if !m.HasData(key) {
 		return &ErrKeyNotFound{key, "key not found"}
 	}
 	delete(m.storage, key)
