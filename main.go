@@ -61,6 +61,9 @@ func (m *Memory) HasData(key string) bool {
 
 // Delete removes the specified key from memory.
 func (m *Memory) Delete(key string) error {
+if !m.HasData(key) {
+		return &ErrKeyNotFound{key, "key not found"}
+	}
 	delete(m.storage, key)
 	return nil
 }
