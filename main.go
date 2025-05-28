@@ -18,11 +18,19 @@ type Memory struct {
 	storage map[string]Data
 }
 
+type ErrKeyNotFound struct {
+	key     string
+	message string
+}
+
+// New creates a new cache memory storage.
 func New() *Memory {
 	return &Memory{storage: make(map[string]Data)}
 }
 
-var ErrKeyNotFound error
+func (e *ErrKeyNotFound) Error() string {
+	return fmt.Sprintf("%s - %s", e.key, e.message)
+}
 
 // TODO: Store
 func (m *Memory) Set(key string, data Data) error {
