@@ -39,7 +39,7 @@ func (m *Memory) Set(key string, data Data) error {
 }
 
 // Get fetches data from memory.
-func (m *Memory) Get(key string) (Data, error) {
+func (m *Memory) Get(key string) (*Data, error) {
 if m.HasData(key) {
 		v := m.storage[key]	
 	return &v, nil
