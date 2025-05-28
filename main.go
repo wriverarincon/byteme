@@ -46,8 +46,11 @@ func (m *Memory) Get(key string) (Data, error) {
 
 // HasData returns whether the key contains valid data.
 func (m *Memory) HasData(key string) bool {
-	v := m.storage[key]
-	if v != Data{{[] []} []} {
+	d := m.storage[key]
+	// When the key doesn't exist in the map, Go will return an empty `Data` value
+	// (i.e., `Data{Schema: {}, Values: []}`), which is not directly useful for checking existence.
+	// We check if the `Values` field is non-nil to determine if data exists.
+	if d.Values != nil {
 		return true
 	}
 	return false
